@@ -22,7 +22,14 @@ router.post('/categories', async (req, res) => {
 
 // 修改分类
 router.post('/categories/update', async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
+  const model = await Category.findByIdAndUpdate(req.body.id, req.body)
+  res.send(model)
+})
+
+// 删除分类
+router.post('/categories/dalete', async (req, res) => {
+  // console.log(req.body)
   const model = await Category.findByIdAndUpdate(req.body.id, req.body)
   res.send(model)
 })
