@@ -1,0 +1,17 @@
+
+@uri=http://localhost:8000/admin/api/
+
+###
+GET {{uri}}asd
+###
+
+GET {{uri}}products/60b5edc9597b073474131a02
+###
+
+POST {{uri}}categories
+Content-Type: application/json
+
+
+{
+  "title": "产品5"
+}
