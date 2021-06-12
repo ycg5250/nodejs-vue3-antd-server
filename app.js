@@ -9,15 +9,34 @@ app.use(express.json())
 // 声明使用解析post请求的中间件
 app.use(express.urlencoded({ extended: true }))
 
+//静态文件托管
+app.use(express.static('public'))
+
 // 使用cors解决跨域
 // app.use(require('cors')())
 
 const router = require('./reoutes/admin')
 
-app.use('/admin/api', router)
+// 引入和注册文件上传的路由
+const routerFile = require('./reoutes/admin/file-upload')
+app.use('/admin/api', routerFile)
+
+// 使用中间件来实现一个通用的CRUD接口
+app.use('/admin/api/rest/:resource', async (req, res, next) => {
+  //使用inflection来把对应的模型复数转换成类名
+  const modelName = require('inflection').classify(req.params.resource)
+  //在req上添加一个Model
+  req.Model = require(`./models/${modelName}`)
+  next()
+}, router)
+
+// app.get('/admin/api/upload', (req, res) => {
+//   console.log('请求成功')
+//   res.send('请求成功')
+// })
 
 mongoose.connect('mongodb://127.0.0.1:27017/node-vue-moba',
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 ).then(() => {
   console.log('数据库连接成功')
   // 当数据库连接成功之后启动服务器

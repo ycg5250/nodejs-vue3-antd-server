@@ -2,7 +2,7 @@
 @uri=http://localhost:8000/admin/api/
 
 ###
-GET {{uri}}asd
+GET {{uri}}upload
 ###
 
 GET {{uri}}products/60b5edc9597b073474131a02
@@ -15,3 +15,8 @@ Content-Type: application/json
 {
   "title": "产品5"
 }
+
+###
+
+POST {{uri}}upload
+Content-Type: application/json
