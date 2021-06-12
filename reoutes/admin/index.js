@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 // 修改分类
 router.post('/update', async (req, res) => {
   // console.log(req.body)
-  const model = await req.Model.findByIdAndUpdate(req.body.id, req.body)
+  const model = await req.Model.findByIdAndUpdate(req.body._id, req.body)
   res.send(model)
 })
 
