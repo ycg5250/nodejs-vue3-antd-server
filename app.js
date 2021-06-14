@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 
 const app = express()
 
-app.use(express.json())
+// limit 服务器默认接收上传的大小为100kb,可以自己修改
+app.use(express.json({ limit: '2100000kb' }))
 
 // 声明使用解析post请求的中间件
 app.use(express.urlencoded({ extended: true }))
