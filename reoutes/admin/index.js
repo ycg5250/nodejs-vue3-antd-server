@@ -27,6 +27,7 @@ router.post('/', async (req, res) => {
 router.post('/update', async (req, res) => {
   // console.log(req.body)
   const model = await req.Model.findByIdAndUpdate(req.body._id, req.body)
+  // console.log(model)
   res.send(model)
 })
 
@@ -44,7 +45,7 @@ router.get('/', async (req, res) => {
   if (req.Model.modelName === 'Category') {
     queryOptions.populate = 'parent'
   }
-  const items = await req.Model.find().setOptions(queryOptions).limit(10)
+  const items = await req.Model.find().setOptions(queryOptions).limit(20)
   res.send(items)
 })
 

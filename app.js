@@ -11,7 +11,8 @@ app.use(express.json({ limit: '2100000kb' }))
 app.use(express.urlencoded({ extended: true }))
 
 //静态文件托管
-app.use(express.static('public'))
+app.use('/public', express.static('public'))
+
 
 // 使用cors解决跨域
 // app.use(require('cors')())
