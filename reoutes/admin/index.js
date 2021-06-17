@@ -1,14 +1,18 @@
 
-
 const express = require('express')
 
-// const Category = require('../../models/Category')
+const jwt = require('jsonwebtoken')
+
+const AdminUser = require('../../models/AdminUser')
+
+// 登录校验中间件
+const loginMiddleWare = require('../../middleware/auth')
 
 const router = express.Router({
   mergeParams: true
 })
 
-// 创建分类
+// 创建资源
 router.post('/', async (req, res) => {
   const { name } = req.body
   const screen = { name }
@@ -23,7 +27,7 @@ router.post('/', async (req, res) => {
 
 })
 
-// 修改分类
+// 修改资源
 router.post('/update', async (req, res) => {
   // console.log(req.body)
   const model = await req.Model.findByIdAndUpdate(req.body._id, req.body)
@@ -31,15 +35,15 @@ router.post('/update', async (req, res) => {
   res.send(model)
 })
 
-// 删除分类
+// 删除资源
 router.post('/delete', async (req, res) => {
   // console.log(req.body)
   await req.Model.findByIdAndRemove(req.body.id)
-  res.send({ status: 0, message: '删除分类成功' })
+  res.send({ status: 0, message: '删除资源成功' })
 })
 
-// 获取分类列表
-router.get('/', async (req, res) => {
+// 获取资源列表
+router.get('/', loginMiddleWare(), async (req, res) => {
   // 判断是否需要添加populate方法
   const queryOptions = {}
   if (req.Model.modelName === 'Category') {
@@ -49,7 +53,7 @@ router.get('/', async (req, res) => {
   res.send(items)
 })
 
-// 获取分类详情
+// 获取资源详情
 router.get('/detail', async (req, res) => {
   // console.log(req.query)
   // get请求的参数从req.query获取

@@ -1,6 +1,11 @@
 const express = require('express')
+// 引入express-async-errors捕获异步函数的异常
+require('express-async-errors');
 
 const mongoose = require('mongoose')
+
+const anth = require('./middleware/auth')
+const resource = require('./middleware/resource')
 
 const app = express()
 
@@ -19,23 +24,22 @@ app.use('/public', express.static('public'))
 
 const router = require('./reoutes/admin')
 
-// 引入和注册文件上传的路由
+// 引入和注册文件上传/登录接口的路由
 const routerFile = require('./reoutes/admin/file-upload')
 app.use('/admin/api', routerFile)
 
 // 使用中间件来实现一个通用的CRUD接口
-app.use('/admin/api/rest/:resource', async (req, res, next) => {
-  //使用inflection来把对应的模型复数转换成类名
-  const modelName = require('inflection').classify(req.params.resource)
-  //在req上添加一个Model
-  req.Model = require(`./models/${modelName}`)
-  next()
-}, router)
+app.use('/admin/api/rest/:resource', anth(), resource(), router)
 
-// app.get('/admin/api/upload', (req, res) => {
-//   console.log('请求成功')
-//   res.send('请求成功')
-// })
+// 存储全局路由secret
+app.set('secret', 'userlogin')
+
+//错误处理函数中间件
+app.use(async (err, req, res, next) => {
+  res.status(err.statusCode || 500).send({
+    message: err.message
+  })
+})
 
 mongoose.connect('mongodb://127.0.0.1:27017/node-vue-moba',
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
