@@ -9,10 +9,13 @@ const assert = require('http-assert')
 const AdminUser = require('../../models/AdminUser')
 const upload = multer({ dest: __dirname + '/../../public/uploads' })
 
+const auth = require('../../middleware/auth')
+
+
 const routerFile = express.Router()
 
 // 上传图片
-routerFile.post('/upload', upload.single('avatar'), async (req, res) => {
+routerFile.post('/upload', auth(), upload.single('avatar'), async (req, res) => {
   console.log('上传图片成功')
   const file = req.file
   file.url = `http://localhost:8000/public/uploads/${file.filename}`

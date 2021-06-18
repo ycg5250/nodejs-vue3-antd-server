@@ -43,7 +43,7 @@ router.post('/delete', async (req, res) => {
 })
 
 // 获取资源列表
-router.get('/', loginMiddleWare(), async (req, res) => {
+router.get('/', async (req, res) => {
   // 判断是否需要添加populate方法
   const queryOptions = {}
   if (req.Model.modelName === 'Category') {
