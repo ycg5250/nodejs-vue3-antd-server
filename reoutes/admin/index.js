@@ -15,14 +15,19 @@ const router = express.Router({
 // 创建资源
 router.post('/', async (req, res) => {
   const { name } = req.body
-  const screen = { name }
-  const category = await req.Model.findOne(screen)
-  // console.log(category)
-  if (category) { //如果不为null，说明已经存在改分类，不在创建分类，返回创建失败信息
-    res.send({ status: 1, message: '创建失败，已存在相同的名称' })
-  } else {
+  if (name === undefined) { // 不需要限制名称相同的处理
     const model = await req.Model.create(req.body)
     res.send(model)
+  } else {
+    const screen = { name }
+    const category = await req.Model.findOne(screen)
+    // console.log(category)
+    if (category) { //如果不为null，说明已经存在改分类，不在创建分类，返回创建失败信息
+      res.send({ status: 1, message: '创建失败，已存在相同的名称' })
+    } else {
+      const model = await req.Model.create(req.body)
+      res.send(model)
+    }
   }
 
 })
@@ -49,7 +54,7 @@ router.get('/', async (req, res) => {
   if (req.Model.modelName === 'Category') {
     queryOptions.populate = 'parent'
   }
-  const items = await req.Model.find().setOptions(queryOptions).limit(20)
+  const items = await req.Model.find().setOptions(queryOptions).limit(200)
   res.send(items)
 })
 

@@ -1,9 +1,12 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  articles: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],
-  name: { type: String },
+  categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],
+  title: { type: String },
   body: { type: String },
+}, {
+  // 生成时间戳
+  timestamps: true
 })
 
 

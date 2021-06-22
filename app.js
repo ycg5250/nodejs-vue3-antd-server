@@ -2,12 +2,15 @@ const express = require('express')
 // 引入express-async-errors捕获异步函数的异常
 require('express-async-errors');
 
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
 const anth = require('./middleware/auth')
 const resource = require('./middleware/resource')
 
 const app = express()
+
+require('./reoutes/web')(app)
+require('./plugins/db')(app)
 
 // limit 服务器默认接收上传的大小为100kb,可以自己修改
 app.use(express.json({ limit: '2100000kb' }))
@@ -21,6 +24,8 @@ app.use('/public', express.static('public'))
 
 // 使用cors解决跨域
 // app.use(require('cors')())
+
+
 
 const router = require('./reoutes/admin')
 
@@ -41,16 +46,8 @@ app.use(async (err, req, res, next) => {
   })
 })
 
-mongoose.connect('mongodb://127.0.0.1:27017/node-vue-moba',
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
-).then(() => {
-  console.log('数据库连接成功')
-  // 当数据库连接成功之后启动服务器
-  app.listen(8000, () => {
-    console.log('App listen on http://localhost:8000')
-  })
-}).catch(error => {
-  console.log('数据库连接失败', error)
-})
 
+app.listen(8000, () => {
+  console.log('App listen on http://localhost:8000')
+})
 

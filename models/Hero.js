@@ -19,9 +19,9 @@ const schema = new mongoose.Schema({
     description: { type: String },
   }],
   // 顺风出装
-  items1: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'item' }],
+  items1: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
   // 逆风出装
-  items2: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'item' }],
+  items2: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
   usageTips: { type: String },
   battleTips: { type: String },
   teamTips: { type: String },
@@ -32,4 +32,4 @@ const schema = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.model('Hero', schema)
+module.exports = mongoose.model('Hero', schema, 'heroes')
