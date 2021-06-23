@@ -773,7 +773,7 @@ module.exports = app => {
           from: 'heroes',
           localField: '_id',
           foreignField: 'categories',
-          as: 'HeroList',
+          as: 'heroList',
         }
       },
     ])
@@ -781,12 +781,25 @@ module.exports = app => {
     const subCats = cats.map(item => item._id)
     cats.unshift({
       name: '热门',
-      HeroList: await Hero.find().where({
+      heroList: await Hero.find().where({
         categories: { $in: subCats }
       }).limit(10).lean()
     })
 
     res.send(cats)
+  })
+
+  // 文章详情
+  router.get('/articles', async (req, res) => {
+    // console.log(req.query.id)
+    const article = await Article.findById(req.query.id)
+    res.send(article)
+  })
+
+  // 英雄详情
+  router.get('/heroes', async (req, res) => {
+    const hero = await Hero.findById(req.query.id).lean()
+    res.send(hero)
   })
 
 
