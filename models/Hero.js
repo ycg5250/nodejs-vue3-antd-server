@@ -18,6 +18,8 @@ const schema = new mongoose.Schema({
     icon: { type: String },
     name: { type: String },
     description: { type: String },
+    delay: { type: String },
+    cost: { type: String },
   }],
   // 顺风出装
   items1: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
